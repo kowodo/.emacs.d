@@ -44,6 +44,15 @@
 
 (setq org-startup-indented t)
 
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+
+(setq org-agenda-files (quote ("~/Dropbox/Emacs/principium_vitae.org"
+                               "~/Dropbox/Emacs/pal.org"
+                               "~/Dropbox/Emacs/dma.org"
+                               "~/Dropbox/Emacs/opt.org"
+                               "~/Dropbox/Emacs/rzn.org")))
+
 (use-package helm
   :ensure t
   :diminish helm-mode
@@ -61,17 +70,35 @@
          ("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)))
 
+(use-package magit
+  :ensure t
+  :bind ("C-c g" . magit-status)
+  :config
+  (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
+
+;; full screen magit-status
+(defadvice magit-status (around magit-fullscreen activate)
+  (window-configuration-to-register :magit-fullscreen)
+  ad-do-it
+  (delete-other-windows))
+
+(defun magit-quit-session ()
+  "Restores the previous window configuration and kills the magit buffer"
+  (interactive)
+  (kill-buffer)
+  (jump-to-register :magit-fullscreen))
+
 (use-package avy
   :ensure t
   :bind
-  ("C-:" . avy-goto-char)
+  ("C-;" . avy-goto-char)
   ("C-'" . avy-goto-char-2)
   ("M-g f" . avy-goto-line))
 
 (use-package guide-key
   :ensure t
   :init
-  (setq guide-key/guide-key-sequence '("C-x" "C-c" "C-c h"))
+  (setq guide-key/guide-key-sequence '("C-x" "C-c" "C-c h" "C-c C-x"))
   (guide-key-mode 1))
 
 (blink-cursor-mode -1)
@@ -88,18 +115,32 @@
   :ensure t
   :init
   (progn
-    (load-theme 'cyberpunk t)
+;    (load-theme 'cyberpunk t)
     (set-face-attribute `mode-line nil
                         :box nil)
     (set-face-attribute `mode-line-inactive nil
-                        :box nil)))
+                        :box nil)
+    )
+)
 
-(use-package solarized-theme
-  :init
-  (setq solarized-use-variable-pitch nil)
-  :ensure t)
+(use-package material-theme
+  :ensure t
+)
 
 (setq monokai-use-variable-pitch nil)
+
+(use-package alect-themes
+  :ensure t)
+
+(use-package moe-theme
+  :ensure t
+  :init
+  (setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
+  (setq moe-theme-resize-org-title '(1.5 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
+  (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
+  (require 'moe-theme)
+  (load-theme 'moe-dark t)
+)
 
 (defun switch-theme (theme)
   "Disables any currently active themes and loads THEME."
@@ -122,9 +163,9 @@
 (bind-key "M-<f11>" 'disable-active-themes)
 
 (setq gnus-select-method
-      '(nnimap "gmail"
-               (nnimap-address "imap.gmail.com")
-               (nnimap-server-port 993)
+      '(nnimap "sh.cvut.cz"
+               (nnimap-address "mbox.sh.cvut.cz")
+               (nnimap-server-port 143)
                (nnimap-stream ssl)))
 
 (use-package smooth-scrolling

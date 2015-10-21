@@ -59,3 +59,6 @@ git diff master emacs/master
 git remote pull master
 git remote pull master emacs
 sudo apt-get upgrade
+ls
+chmod 600 ~/.authinfo
+chmod 600 ~/.authinfo

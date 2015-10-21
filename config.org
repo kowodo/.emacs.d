@@ -1,3 +1,14 @@
+* About this file
+This is one of two configuration files i use. This one is called from
+init.el by command
+: (org-babel-load-file (concat user-emacs-directory "config.org"))
+
+Hugely influenced by [[https://github.com/danielmai/.emacs.d/blob/master/config.org][Daniel Mai's configuration]]
+
+This configuration uses [[https://github.com/jwiegley/use-package][use-package]] from John Wiegley, which is great
+way to manage packages. Sasha Chua did some kind of interview called
+[[https://www.youtube.com/watch?v%3D2TSKxxYEbII][2015-04-01 Emacs package highlight: use-package]]. 
+
 * Personal information
 #+BEGIN_SRC emacs-lisp
 (setq user-full-name "Štěpán Křivanec"
@@ -65,6 +76,21 @@ Set up the customize file to its own separate file, instead of saving customize 
 #+BEGIN_SRC emacs-lisp
 (setq org-startup-indented t)
 #+END_SRC
+** some "standart" keybindings
+This is taken from [[http://doc.norang.ca/org-mode.html#HowToUseThisDocument][norang: Org Mode - Organize Your Life In Plain Text!]]
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+#+END_SRC
+** org-agenda-files path
+location of agenda files
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-files (quote ("~/Dropbox/Emacs/principium_vitae.org"
+			       "~/Dropbox/Emacs/pal.org"
+			       "~/Dropbox/Emacs/dma.org"
+			       "~/Dropbox/Emacs/opt.org"
+			       "~/Dropbox/Emacs/rzn.org")))
+#+END_SRC
 * Helm-mode
 #+BEGIN_SRC emacs-lisp
 (use-package helm
@@ -84,6 +110,38 @@ Set up the customize file to its own separate file, instead of saving customize 
          ("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)))
 #+END_SRC
+* magit
+ [[https://github.com/danielmai/.emacs.d/blob/master/config.org][source: Daniel Mai's configuration]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure t
+  :bind ("C-c g" . magit-status)
+  :config
+  (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
+#+END_SRC
+** Fullscreen magit
+ [[https://github.com/danielmai/.emacs.d/blob/master/config.org][source: Daniel Mai's configuration]].
+
+    "The following code makes magit-status run alone in the frame, and
+    then restores the old window configuration when you quit out of
+    magit."
+
+    No more juggling windows after commiting. It’s magit bliss.
+
+#+BEGIN_SRC emacs-lisp
+;; full screen magit-status
+(defadvice magit-status (around magit-fullscreen activate)
+  (window-configuration-to-register :magit-fullscreen)
+  ad-do-it
+  (delete-other-windows))
+
+(defun magit-quit-session ()
+  "Restores the previous window configuration and kills the magit buffer"
+  (interactive)
+  (kill-buffer)
+  (jump-to-register :magit-fullscreen))
+#+END_SRC
 * Avy
 [[https://github.com/abo-abo/avy][avy]] is a GNU Emacs package for jumping to visible text using a char-based decision tree.
 
@@ -91,10 +149,13 @@ Set up the customize file to its own separate file, instead of saving customize 
 (use-package avy
   :ensure t
   :bind
-  ("C-:" . avy-goto-char)
+  ("C-;" . avy-goto-char)
   ("C-'" . avy-goto-char-2)
   ("M-g f" . avy-goto-line))
 #+END_SRC
+
+#+RESULTS:
+
 ** TODO C-'
 conflicts with  org-cycle-agenda-files
 * guide-key
@@ -102,7 +163,7 @@ conflicts with  org-cycle-agenda-files
 (use-package guide-key
   :ensure t
   :init
-  (setq guide-key/guide-key-sequence '("C-x" "C-c" "C-c h"))
+  (setq guide-key/guide-key-sequence '("C-x" "C-c" "C-c h" "C-c C-x"))
   (guide-key-mode 1))
 #+END_SRC
 * Blinking cursor
@@ -126,33 +187,66 @@ conflicts with  org-cycle-agenda-files
 #+END_SRC
 
 * Themes
-this i grabbed in  [[https://github.com/danielmai/.emacs.d/blob/master/config.org][Daniel May's config]]
+Great source of screenshots of popular themes is [[http://emacsthemes.com/][A GNU Emacs Themes Gallery]].
 
-** Cyberpunk theme
+Lots of this section was grabbed from  [[https://github.com/danielmai/.emacs.d/blob/master/config.org][Daniel May's config]].
+
+** Cyberpunk theme *
+[[https://github.com/n3mo/cyberpunk-theme.el][n3mo/cyberpunk-theme.el]]
 #+BEGIN_SRC emacs-lisp
 (use-package cyberpunk-theme
   :ensure t
   :init
   (progn
-    (load-theme 'cyberpunk t)
+;    (load-theme 'cyberpunk t)
     (set-face-attribute `mode-line nil
                         :box nil)
     (set-face-attribute `mode-line-inactive nil
-                        :box nil)))
+                        :box nil)
+    )
+)
 #+END_SRC
 
-** Solarized theme
+#+RESULTS:
+
+** Material theme
+[[https://github.com/cpaulik/emacs-material-theme][cpaulik/emacs-material-theme]]
 #+BEGIN_SRC emacs-lisp
-(use-package solarized-theme
-  :init
-  (setq solarized-use-variable-pitch nil)
-  :ensure t)
+(use-package material-theme
+  :ensure t
+)
 #+END_SRC
 
-** Monokai theme
+
+** TODO Monokai theme
+seems like I erased somithing here 
 #+BEGIN_SRC emacs-lisp
 (setq monokai-use-variable-pitch nil)
 #+END_SRC
+
+** Alect themes
+[[https://github.com/alezost/alect-themes][alezost/alect-themes]]
+#+BEGIN_SRC emacs-lisp
+(use-package alect-themes
+  :ensure t)
+#+END_SRC
+
+** Moe theme
+[[https://github.com/kuanyui/moe-theme.el][kuanyui/moe-theme.el]]
+#+BEGIN_SRC emacs-lisp
+(use-package moe-theme
+  :ensure t
+  :init
+  (setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
+  (setq moe-theme-resize-org-title '(1.5 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
+  (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
+  (require 'moe-theme)
+  (load-theme 'moe-dark t)
+)
+#+END_SRC
+
+*** TODO resize
+ATM resizing of headings does not work. 
 
 ** Convenient theme functions
 #+BEGIN_SRC emacs-lisp
@@ -178,13 +272,13 @@ this i grabbed in  [[https://github.com/danielmai/.emacs.d/blob/master/config.or
 #+END_SRC
 * mail
 
-** gnus
+** TODO gnus
 I have no idea how this works :( .... so it does not ATM
 #+BEGIN_SRC emacs-lisp
 (setq gnus-select-method
-      '(nnimap "gmail"
-               (nnimap-address "imap.gmail.com")
-               (nnimap-server-port 993)
+      '(nnimap "sh.cvut.cz"
+               (nnimap-address "mbox.sh.cvut.cz")
+               (nnimap-server-port 143)
                (nnimap-stream ssl)))
 #+END_SRC
 
@@ -201,7 +295,10 @@ I have no idea how this works :( .... so it does not ATM
 #+END_SRC
 
 * Ace Window
-ace-window is a package that uses the same idea from ace-jump-mode for buffer navigation, but applies it to windows. The default keys are 1-9, but it’s faster to access the keys on the home row, so that’s what I have them set to (with respect to Dvorak, of course).
+[[https://github.com/abo-abo/ace-window][ace-window]] is a package that uses the same idea from ace-jump-mode for
+buffer navigation, but applies it to windows. The default keys are
+1-9, but it’s faster to access the keys on the home row, so that’s
+what I have them set to (with respect to Dvorak, of course).
 #+BEGIN_SRC emacs-lisp
 (use-package ace-window
   :ensure t
