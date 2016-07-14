@@ -1,0 +1,634 @@
+* About this file
+This is one of two configuration files i use. This one is called from
+init.el by command
+: (org-babel-load-file (concat user-emacs-directory "config.org"))
+
+Hugely influenced by [[https://github.com/danielmai/.emacs.d/blob/master/config.org][Daniel Mai's configuration]]
+
+This configuration uses [[https://github.com/jwiegley/use-package][use-package]] from John Wiegley, which is great
+way to manage packages. Sasha Chua did some kind of interview called
+[[https://www.youtube.com/watch?v%3D2TSKxxYEbII][2015-04-01 Emacs package highlight: use-package]]. 
+* Visible bell
+Taken from Nick Winter's [[http://blog.nickwinter.net/my-emacs]["my-emacs"]]
+#+BEGIN_SRC emacs-lisp
+(setq visible-bell 1)
+#+END_SRC
+
+* Personal information
+#+BEGIN_SRC emacs-lisp
+(setq user-full-name "Štěpán Křivanec"
+      user-mail-address "stepan.krivanec@gmail.com")
+#+END_SRC
+* startup message & empty scratch
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+(setq initial-scratch-message "")
+#+END_SRC
+* Customize settings
+Set up the customize file to its own separate file, instead of saving customize settings in init.el.
+#+BEGIN_SRC emacs-lisp
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
+#+END_SRC
+* UTF-8
+#+BEGIN_SRC emacs-lisp
+(setq locale-coding-system 'utf-8) ; pretty
+(set-terminal-coding-system 'utf-8) ; pretty
+(set-keyboard-coding-system 'utf-8) ; pretty
+(set-selection-coding-system 'utf-8) ; please
+(prefer-coding-system 'utf-8) ; with sugar on top
+(set-charset-priority 'unicode)
+#+END_SRC
+* Org-mode
+
+** TODO bleedin edge
+This part of configuration is meant to use compiled org-mode instead
+the build-in.
+
+I wanted to export unicode characters. This drowe me to installing the
+latest version of org-mode which is atm only in github.  I have
+followed [[http://orgmode.org/worg/org-faq.html#keeping-current-with-Org-mode-development][Org-mode Frequently Asked Questions]] tutorial.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+;;(require 'org)
+;;(require '(org-version org))
+
+(add-to-list 'load-path (expand-file-name "~/elisp/org-mode/lisp"))
+(remove 'load-path (expand-file-name "/usr/local/share/emacs/24.4/lisp/org/"))
+(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+(require 'org)
+#+END_SRC
+
+
+
+** forbid invisible edits
+#+BEGIN_SRC emacs-lisp
+(setq org-catch-invisible-edits 'error) ;now I can't edit invisible text. C-c C-r (org-reveal) will display where the point is if it is buried in invisible text to allow editing again.
+#+END_SRC
+
+** enabling speed keys
+#+BEGIN_SRC emacs-lisp
+(setq org-use-speed-commands t)
+#+END_SRC
+
+** export settings
+#+BEGIN_SRC emacs-lisp
+; UTF-8 as the default coding systerm for all org files:
+(setq org-export-coding-system 'utf-8)
+(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+#+END_SRC
+
+*** utf8x
+
+With this unicode math symbols in buffer are correctly exported to pdf.
+source: [[http://emacs.stackexchange.com/questions/20062/exporting-unicode-characters-to-pdf-using-latex-from-org-mode][org export - Exporting unicode characters to pdf using latex from org mode - Emacs Stack Exchange]]
+#+BEGIN_SRC emacs-lisp 
+(require 'ox-latex)
+(setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
+#+END_SRC
+
+*** mathletters ucs
+
+This line makes sure the greek alfabeth will be exported as well. 
+source: [[http://emacs.stackexchange.com/questions/20062/exporting-unicode-characters-to-pdf-using-latex-from-org-mode][org export - Exporting unicode characters to pdf using latex from org mode - Emacs Stack Exchange]]
+ 
+#+BEGIN_SRC emacs-lisp
+(setq org-latex-default-packages-alist (cons '("mathletters" "ucs" nil) org-latex-default-packages-alist))
+#+END_SRC
+
+
+** Org babel languanges
+#+BEGIN_SRC emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (dot . t)
+   (C . t)
+   (calc . t)
+   (latex . t)
+   (java . t)
+   (ruby . t)
+   (scheme . t)
+   (sh . t)
+   (sqlite . t)
+   (js . t)))
+#+END_SRC
+
+** Org babel/source blocks
+#+BEGIN_SRC emacs-lisp
+(setq org-src-fontify-natively t
+      org-src-window-setup 'current-window
+      org-src-strip-leading-and-trailing-blank-lines t
+      org-src-preserve-indentation t
+      org-src-tab-acts-natively t)
+#+END_SRC
+
+** indented headings
+headings and their text are shifted to right acording to their level.
+#+BEGIN_SRC emacs-lisp
+(setq org-startup-indented t)
+#+END_SRC
+
+** some "standart" keybindings
+This is taken from [[http://doc.norang.ca/org-mode.html#HowToUseThisDocument][norang: Org Mode - Organize Your Life In Plain Text!]]
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+#+END_SRC
+
+** org-agenda-files path
+location of agenda files
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-files (quote ("~/Dropbox/Emacs/principium_vitae.org"
+			       "~/Dropbox/Emacs/JakNaEmacs.org"
+			       ;; fel oi 1. semester
+			       "~/Dropbox/Emacs/pal.org"
+			       "~/Dropbox/Emacs/dma.org"
+			       "~/Dropbox/Emacs/opt.org"
+			       "~/Dropbox/Emacs/rzn.org"
+			       ;; fel oi 2. semester
+			       "~/Dropbox/Emacs/tal.org"
+			       "~/Dropbox/Emacs/bia.org"
+			       "~/Dropbox/Emacs/ko.org"
+			       "~/Dropbox/Emacs/pah.org"
+			       ;; emacs configuration
+			       "~/.emacs.d/config.org")))
+#+END_SRC
+
+
+
+** \TODO 
+sources:
+[[http://orgmode.org/manual/Tracking-TODO-state-changes.html][Tracking TODO state changes - The Org Manual]]
+[[http://doc.norang.ca/org-mode.html#TodoKeywords][Org Mode - Organize Your Life In Plain Text! #TodoKeywords]]
+C-h v org-todo-keywords
+
+#+BEGIN_SRC emacs-lisp
+ (setq org-todo-keywords
+       '((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@/@)")))
+#+END_SRC
+
+** Fontify the whole headings line
+This is taken from [[https://github.com/fniessen/emacs-leuven-theme][fniessen/emacs-leuven-theme · GitHub]]
+#+BEGIN_SRC emacs-lisp
+;; Fontify the whole line for headings (with a background color).
+(setq org-fontify-whole-heading-line t)
+#+END_SRC
+
+** unmaping unhandy org-mode shortcuts
+
+#+BEGIN_SRC emacs-lisp
+(unbind-key "C-," org-mode-map) ;; org-cycle-agenda-files
+(unbind-key "C-'" org-mode-map) ;; org-cycle-agenda-files
+#+END_SRC
+
+** Reload images on source execution
+- Source:
+  - [[https://github.com/correl/dotfiles/blob/master/.emacs.d/emacs.org][dotfiles/emacs.org at master · correl/dotfiles]]
+  - [[http://sachachua.com/blog/2015/07/july-2015-emacs-hangout/][July 2015 Emacs Hangout - sacha chua :: living an awesome life]]
+
+The whole point is to avoid calling *org-redisplay-inline-images* or
+twice *org-display-inline-images* after making some changes to dot source block in org-mode.
+
+#+BEGIN_SRC emacs-lisp
+(defun my/redisplay-org-images ()
+  (when org-inline-image-overlays
+    (org-redisplay-inline-images)))
+
+(add-hook 'org-babel-after-execute-hook
+          'my/redisplay-org-images)
+#+END_SRC
+
+* Themes
+Great source of screenshots of popular themes is [[http://emacsthemes.com/][A GNU Emacs Themes Gallery]].
+
+Lots of this section was grabbed from  [[https://github.com/danielmai/.emacs.d/blob/master/config.org][Daniel May's config]].
+
+** Cyberpunk theme 
+[[https://github.com/n3mo/cyberpunk-theme.el][n3mo/cyberpunk-theme.el]]
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package cyberpunk-theme
+  :ensure t
+  :init
+  (progn
+    (load-theme 'cyberpunk t)
+    (set-face-attribute `mode-line nil
+                        :box nil)
+    (set-face-attribute `mode-line-inactive nil
+                        :box nil)
+    )
+)
+#+END_SRC
+
+** Material theme
+[[https://github.com/cpaulik/emacs-material-theme][cpaulik/emacs-material-theme]]
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package material-theme
+  :ensure t
+)
+#+END_SRC
+
+** Alect themes
+[[https://github.com/alezost/alect-themes][alezost/alect-themes]]
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package alect-themes
+  :ensure t)
+#+END_SRC
+
+** Moe theme
+[[https://github.com/kuanyui/moe-theme.el][kuanyui/moe-theme.el]]
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package moe-theme
+  :ensure t
+  :init
+  (require 'moe-theme)
+  (load-theme 'moe-dark t)
+;  (load-theme 'moe-light t)
+)
+#+END_SRC
+
+
+*** TODO resize
+ATM resizing of headings does not work.
+
+** Zenburn
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package zenburn-theme
+  :ensure t
+  :init
+;  (require 'zenburn-theme)
+;  (load-theme  'zenburn t)
+)
+#+END_SRC
+
+** Leuven
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package leuven-theme
+  :ensure t
+  :init
+  (progn
+    (load-theme 'leuven t)
+    ;(set-face-attribute 'default nil :font "Andale Mono-10") ; better than Ubuntu default
+    ;(set-face-attribute 'default t :font "Dejavu Sans Mono-13")
+    (set-face-attribute 'default nil :font "Droid Sans Mono-10")
+
+    )
+)
+#+END_SRC
+
+** Anti-zenburn
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package anti-zenburn-theme
+  :ensure t
+  :init
+  (progn
+    (load-theme 'anti-zenburn t)
+  )
+)
+#+END_SRC
+
+#+RESULTS:
+
+** meacupla-theme
+#+BEGIN_SRC emacs-lisp
+(use-package meacupla-theme
+  :ensure t
+  :init 
+  (progn
+    (load-theme 'meacupla t)
+))
+#+END_SRC
+
+#+RESULTS:
+
+** Convenient theme functions
+#+BEGIN_SRC emacs-lisp
+(defun switch-theme (theme)
+  "Disables any currently active themes and loads THEME."
+  ;; This interactive call is taken from `load-theme'
+  (interactive
+   (list
+    (intern (completing-read "Load custom theme: "
+                             (mapc 'symbol-name
+                                   (custom-available-themes))))))
+  (let ((enabled-themes custom-enabled-themes))
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme theme t)))
+
+(defun disable-active-themes ()
+  "Disables any currently active themes listed in `custom-enabled-themes'."
+  (interactive)
+  (mapc #'disable-theme custom-enabled-themes))
+
+(bind-key "M-<f12>" 'switch-theme)
+(bind-key "M-<f11>" 'disable-active-themes)
+#+END_SRC
+
+* Font
+DejaVu Sans Mono
+#+BEGIN_SRC :tangle no
+(set-face-attribute 'default t :font "DejaVu Sans Mono-9")
+#+END_SRC
+
+
+
+* Helm-mode
+#+BEGIN_SRC emacs-lisp
+(use-package helm
+  :ensure t
+  :diminish helm-mode
+  :init (progn
+          (require 'helm-config)
+          (setq helm-split-window-in-side-p         t ; open helm buffer inside current window, not occupy whole other window
+              helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+              helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+              helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+              helm-ff-file-name-history-use-recentf t)
+          (helm-mode))
+  :bind (("C-c h" . helm-command-prefix)
+         ("C-x b" . helm-mini)
+         ("C-`" . helm-resume)
+         ("M-x" . helm-M-x)
+         ("C-x C-f" . helm-find-files)
+	   ("M-y" . helm-show-kill-ring)))
+#+END_SRC
+
+* TODO Helm-swoop
+#+BEGIN_SRC emacs-lisp 
+(use-package helm-swoop
+  :ensure t
+  :init
+  (require 'helm)
+  ;; When doing isearch, hand the word over to helm-swoop
+;  (bind-key "M-i" 'helm-swoop-from-isearch isearch-mode-map)
+  ;; From helm-swoop to helm-multi-swoop-all
+;  (bind-key "M-i" 'helm-multi-swoop-all-from-helm-swoop helm-swoop-map)
+
+  
+  :bind(
+	("M-i" . helm-swoop)
+	("M-I" . helm-swoop-back-to-last-point)
+	("C-c M-i" . helm-multi-swoop)
+	("C-x M-i" . helm-multi-swoop-all)
+;	("M-i" . helm-swoop-from-isearch isearch-mode-map) ;; wrong syntax
+	("M-i" . helm-swoop-from-isearch)
+	("M-i" . helm-multi-swoop-all-from-helm-swoop)
+	)
+)
+#+END_SRC
+
+* TODO helm-company
+[[https://github.com/julienfantin/.emacs.d/blob/master/init.el][.emacs.d/init.el at master · julienfantin/.emacs.d]]
+- this guy seems to solved it. Might be worth to check out.
+
+#+BEGIN_SRC emacs-lisp :tangle no 
+(use-package helm-company
+  :ensure t
+  :defer t 
+)
+#+END_SRC
+
+* company-mode
+#+BEGIN_SRC emacs-lisp
+(use-package company
+  :ensure t
+  :defer t
+  :init (global-company-mode t)
+  (setq company-minimum-prefix-length 1)
+  (setq company-idle-delay 0.5)
+  )
+#+END_SRC
+
+#+RESULTS:
+: 0.5
+
+
+* DONE company-math
+- State "DONE"       from "TODO"       [2016-03-04 Pá 19:25]
+This handles 
+#+BEGIN_SRC emacs-lisp 
+(use-package company-math
+  :ensure t
+  :defer t
+  :after company
+  ;; Add backend for math characters
+  :init (progn
+          (add-to-list 'company-backends 'company-math-symbols-unicode)
+          (add-to-list 'company-backends 'company-math-symbols-latex)))
+#+END_SRC
+
+* magit
+ [[https://github.com/danielmai/.emacs.d/blob/master/config.org][source: Daniel Mai's configuration]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure t
+  :bind ("C-c g" . magit-status)
+  :config
+  (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
+#+END_SRC
+** Fullscreen magit
+ [[https://github.com/danielmai/.emacs.d/blob/master/config.org][source: Daniel Mai's configuration]].
+
+    "The following code makes magit-status run alone in the frame, and
+    then restores the old window configuration when you quit out of
+    magit."
+
+    No more juggling windows after commiting. It’s magit bliss.
+
+#+BEGIN_SRC emacs-lisp
+;; full screen magit-status
+(defadvice magit-status (around magit-fullscreen activate)
+  (window-configuration-to-register :magit-fullscreen)
+  ad-do-it
+  (delete-other-windows))
+
+(defun magit-quit-session ()
+  "Restores the previous window configuration and kills the magit buffer"
+  (interactive)
+  (kill-buffer)
+  (jump-to-register :magit-fullscreen))
+#+END_SRC
+* Avy
+[[https://github.com/abo-abo/avy][avy]] is a GNU Emacs package for jumping to visible text using a char-based decision tree.
+
+#+BEGIN_SRC emacs-lisp
+(use-package avy
+  :ensure t
+  :bind
+  ("C-;" . avy-goto-char)
+  ("C-'" . avy-goto-char-2)
+  ("M-g f" . avy-goto-line))
+#+END_SRC
+
+#+RESULTS:
+
+** TODO C-'
+conflicts with  org-cycle-agenda-files
+
+* Key bindings reminders
+** guide-key
+
+#+BEGIN_SRC sh
+(use-package guide-key
+  :ensure t
+  :init
+  (setq guide-key/guide-key-sequence '("C-x" "C-h" "C-c" "C-c h"))
+  (setq guide-key/recursive-key-sequence-flag t)
+  (guide-key-mode 1)
+  (setq guide-key/idle-delay 0.2))
+#+END_SRC
+
+** Which-key
+Is alternative to guide-key. Shows possible follow-ups for pressed
+keybinding with description.
+
+Source: [[http://sachachua.com/blog/2015/07/july-2015-emacs-hangout/][July 2015 Emacs Hangout - sacha chua :: living an awesome life]]
+
+Github page: [[https://github.com/justbur/emacs-which-key][justbur/emacs-which-key]]
+
+This should look better and being usable even for multiple opened buffers. 
+
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :init
+  (which-key-mode)
+)
+#+END_SRC
+
+* Cursor
+** Blinking cursor
+#+BEGIN_SRC emacs-lisp
+(blink-cursor-mode -1)
+#+END_SRC
+
+** Beacon mode
+source: [[http://sachachua.com/blog/2015/11/2015-11-18-emacs-hangout/][2015-11-18 Emacs Hangout - sacha chua :: living an awesome life]]
+
+#+BEGIN_SRC emacs-lisp
+(use-package beacon
+  :ensure t
+  :init
+  (beacon-mode 1)
+)
+#+END_SRC
+
+#+RESULTS:
+
+* Turn off mouse interface
+
+#+BEGIN_SRC emacs-lisp
+(when window-system
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tooltip-mode -1))
+#+END_SRC
+
+* input settings
+#+BEGIN_SRC emacs-lisp
+(setq default-input-method "czech-qwerty")
+#+END_SRC
+
+* mail
+
+** TODO gnus
+I have no idea how this works :( .... so it does not work ATM
+#+BEGIN_SRC emacs-lisp
+;(setq gnus-select-method
+;      '(nnimap "sh.cvut.cz"
+;               (nnimap-address "mbox.sh.cvut.cz")
+;               (nnimap-server-port 143)
+;               (nnimap-stream ssl)))
+#+END_SRC
+
+*** sources
+[[http://www.emacswiki.org/emacs/GnusGmail#toc2][EmacsWiki: Gnus Gmail]]
+[[https://eschulte.github.io/emacs24-starter-kit/starter-kit-gnus.html][Starter Kit Gnus]]
+[[http://www.emacswiki.org/emacs/GnusTutorial][EmacsWiki: Gnus Tutorial]]
+
+* pdf-tools
+This is full-featured pdf viewer inside buffer.
+[[https://github.com/politza/pdf-tools][github.com/politza/pdf-tools page]] contains instructions for
+instalation and so forth.
+
+Not sure if this have to be run on each startup:
+#+BEGIN_SRC emacs-lisp
+(pdf-tools-install)
+#+END_SRC
+
+* smooth scrolling
+I'm not sure if I like it anymore
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package smooth-scrolling
+  :ensure t)
+#+END_SRC
+
+* Ace Window
+[[https://github.com/abo-abo/ace-window][ace-window]] is a package that uses the same idea from ace-jump-mode for
+buffer navigation, but applies it to windows. The default keys are
+1-9, but it’s faster to access the keys on the home row, so that’s
+what I have them set to (with respect to Dvorak, of course).
+#+BEGIN_SRC emacs-lisp
+(use-package ace-window
+  :ensure t
+  :config
+  (setq aw-keys '(?j ?k ?l ?u ?i ?o ?p))
+  (ace-window-display-mode)
+  :bind ("s-i" . ace-window))
+#+END_SRC
+
+* command-log-mode
+This is something i have discovered in [[https://www.youtube.com/watch?v%3DVvnJQpTFVDc][swiper screencast video]].
+It shows commands in buffer.
+
+This is exelent feature for screencast & showing Emacs capabilities/workflow. 
+
+#+BEGIN_SRC emacs-lisp
+(use-package command-log-mode
+  :ensure t)
+#+END_SRC
+
+* show-paren-mode
+[[http://www.emacswiki.org/emacs/ShowParenMode][EmacsWiki: Show Paren Mode]]
+"show-paren-mode allows one to see matching pairs of parentheses and
+other characters. When point is on one of the paired characters, the
+other is highlighted. Activate it once by running"
+
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode 1)
+#+END_SRC
+
+* Prompt for ‘y or n’ instead of ‘yes or no’
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p #'y-or-n-p)
+#+END_SRC
+
+* powerline
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package powerline
+  :ensure t
+  :init
+  (powerline-default-theme)
+;  (powerline-center-theme)
+;  (powerline-nano-theme)
+)
+#+END_SRC
+
+#+RESULTS:
+
+* keyfreq
+#+BEGIN_SRC emacs-lisp
+(use-package keyfreq
+  :ensure t
+  :init
+  (require 'keyfreq)
+  (require 'cl) ;; this fixes bug: https://github.com/dacap/keyfreq/issues/9#issuecomment-50265304
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1)
+)
+#+END_SRC
+
+
+
