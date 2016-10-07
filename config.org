@@ -276,6 +276,8 @@ ATM resizing of headings does not work.
 )
 #+END_SRC
 
+#+RESULTS:
+
 ** Anti-zenburn
 #+BEGIN_SRC emacs-lisp :tangle no
 (use-package anti-zenburn-theme
@@ -290,7 +292,7 @@ ATM resizing of headings does not work.
 #+RESULTS:
 
 ** meacupla-theme
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (use-package meacupla-theme
   :ensure t
   :init 
@@ -520,11 +522,13 @@ source: [[http://sachachua.com/blog/2015/11/2015-11-18-emacs-hangout/][2015-11-1
 
 #+BEGIN_SRC emacs-lisp
 (when window-system
-  (menu-bar-mode -1)
+;  (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (tooltip-mode -1))
 #+END_SRC
+
+#+RESULTS:
 
 * input settings
 #+BEGIN_SRC emacs-lisp
