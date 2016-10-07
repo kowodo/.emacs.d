@@ -276,6 +276,8 @@ ATM resizing of headings does not work.
 )
 #+END_SRC
 
+#+RESULTS:
+
 ** Anti-zenburn
 #+BEGIN_SRC emacs-lisp :tangle no
 (use-package anti-zenburn-theme
@@ -290,7 +292,7 @@ ATM resizing of headings does not work.
 #+RESULTS:
 
 ** meacupla-theme
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (use-package meacupla-theme
   :ensure t
   :init 
