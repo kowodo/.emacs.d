@@ -6,6 +6,9 @@
  ;; If there is more than one, they won't work right.
  '(canlock-password "7bac8234aeae3716dcd939e8a4424f1d085736be")
  '(org-log-into-drawer t)
+ '(package-selected-packages
+   (quote
+    (beacon which-key avy magit company-math company helm-swoop helm meacupla-theme use-package)))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 587))

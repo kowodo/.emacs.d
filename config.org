@@ -31,6 +31,10 @@ Set up the customize file to its own separate file, instead of saving customize 
 (load custom-file)
 #+END_SRC
 * UTF-8
+source: 
+- prvni  [[https://github.com/danielmai/.emacs.d/blob/master/config.org][Daniel Mai's configuration]]
+- druhy [[http://stackoverflow.com/questions/2901541/which-coding-system-should-i-use-in-emacs][character encoding - Which coding system should I use in Emacs? - Stack Overflow]]
+
 #+BEGIN_SRC emacs-lisp
 (setq locale-coding-system 'utf-8) ; pretty
 (set-terminal-coding-system 'utf-8) ; pretty
@@ -38,6 +42,12 @@ Set up the customize file to its own separate file, instead of saving customize 
 (set-selection-coding-system 'utf-8) ; please
 (prefer-coding-system 'utf-8) ; with sugar on top
 (set-charset-priority 'unicode)
+
+
+(setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
+(set-language-environment 'utf-8)
+(set-default-coding-systems 'utf-8)
+(unless (eq system-type 'windows-nt)
 #+END_SRC
 * Org-mode
 
