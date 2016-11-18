@@ -222,7 +222,7 @@ Lots of this section was grabbed from  [[https://github.com/danielmai/.emacs.d/b
 
 ** Material theme
 [[https://github.com/cpaulik/emacs-material-theme][cpaulik/emacs-material-theme]]
-#+BEGIN_SRC emacs-lisp 
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package material-theme
   :ensure t
 )
@@ -260,6 +260,8 @@ ATM resizing of headings does not work.
 ;  (load-theme  'zenburn t)
 )
 #+END_SRC
+
+#+RESULTS:
 
 ** Leuven 
 #+BEGIN_SRC emacs-lisp :tangle no
