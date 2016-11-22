@@ -204,6 +204,16 @@ Great source of screenshots of popular themes is [[http://emacsthemes.com/][A GN
 
 Lots of this section was grabbed from  [[https://github.com/danielmai/.emacs.d/blob/master/config.org][Daniel May's config]].
 
+
+
+** color-theme
+#+BEGIN_SRC emacs-lisp
+(use-package color-theme
+:ensure t)
+#+END_SRC
+
+#+RESULTS:
+
 ** Cyberpunk theme 
 [[https://github.com/n3mo/cyberpunk-theme.el][n3mo/cyberpunk-theme.el]]
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -635,6 +645,8 @@ other is highlighted. Activate it once by running"
   (keyfreq-autosave-mode 1)
 )
 #+END_SRC
+
+
 
 
 
