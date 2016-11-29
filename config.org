@@ -199,6 +199,15 @@ twice *org-display-inline-images* after making some changes to dot source block 
           'my/redisplay-org-images)
 #+END_SRC
 
+** org-bullets
+Show org-mode bullets as UTF-8 characters.
+#+BEGIN_SRC emacs-lisp
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+END_SRC
+
 * Themes
 Great source of screenshots of popular themes is [[http://emacsthemes.com/][A GNU Emacs Themes Gallery]].
 
@@ -336,6 +345,12 @@ ATM resizing of headings does not work.
 
 (bind-key "M-<f12>" 'switch-theme)
 (bind-key "M-<f11>" 'disable-active-themes)
+#+END_SRC
+
+* highlight line
+#+BEGIN_SRC emacs-lisp
+; Highlights the current cursor line
+(global-hl-line-mode t)
 #+END_SRC
 
 * Font
