@@ -61,6 +61,9 @@ static char *gnus-pointer[] = {
 \"###########.######\" };")))
  '(hl-sexp-background-color "#efebe9")
  '(org-log-into-drawer t)
+ '(package-selected-packages
+   (quote
+    (beacon which-key avy magit company-math company helm-swoop helm meacupla-theme use-package)))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 587)
