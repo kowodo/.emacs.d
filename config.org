@@ -47,7 +47,8 @@ source:
 (setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
 (set-language-environment 'utf-8)
 (set-default-coding-systems 'utf-8)
-(unless (eq system-type 'windows-nt)
+;(unless (eq system-type 'windows-nt)
+; (set-selection-coding-system 'utf-8))
 #+END_SRC
 * Org-mode
 
@@ -271,6 +272,8 @@ ATM resizing of headings does not work.
 )
 #+END_SRC
 
+#+RESULTS:
+
 ** Leuven
 #+BEGIN_SRC emacs-lisp :tangle no
 (use-package leuven-theme
@@ -302,7 +305,7 @@ ATM resizing of headings does not work.
 #+RESULTS:
 
 ** meacupla-theme
-#+BEGIN_SRC emacs-lisp 
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package meacupla-theme
   :ensure t
   :init 
