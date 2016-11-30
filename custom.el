@@ -63,7 +63,7 @@ static char *gnus-pointer[] = {
  '(org-log-into-drawer t)
  '(package-selected-packages
    (quote
-    (zenburn-theme alect-themes material-theme beacon which-key avy magit company-math company helm-swoop helm meacupla-theme use-package)))
+    (color-theme org-bullets zenburn-theme alect-themes material-theme beacon which-key avy magit company-math company helm-swoop helm meacupla-theme use-package)))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 587)
