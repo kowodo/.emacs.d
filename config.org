@@ -210,10 +210,29 @@ twice *org-display-inline-images* after making some changes to dot source block 
           'my/redisplay-org-images)
 #+END_SRC
 
+** org-bullets
+Show org-mode bullets as UTF-8 characters.
+#+BEGIN_SRC emacs-lisp
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+END_SRC
+
 * Themes
 Great source of screenshots of popular themes is [[http://emacsthemes.com/][A GNU Emacs Themes Gallery]].
 
 Lots of this section was grabbed from  [[https://github.com/danielmai/.emacs.d/blob/master/config.org][Daniel May's config]].
+
+
+
+** color-theme
+#+BEGIN_SRC emacs-lisp
+(use-package color-theme
+:ensure t)
+#+END_SRC
+
+#+RESULTS:
 
 ** Cyberpunk theme 
 [[https://github.com/n3mo/cyberpunk-theme.el][n3mo/cyberpunk-theme.el]]
@@ -274,18 +293,19 @@ ATM resizing of headings does not work.
 
 #+RESULTS:
 
-** Leuven
+** Leuven 
+
 #+BEGIN_SRC emacs-lisp :tangle no
+
 (use-package leuven-theme
   :ensure t
   :init
-  (progn
-    (load-theme 'leuven t)
+   (setq leuven-scale-outline-headlines nil)
+   (load-theme 'leuven t)
     ;(set-face-attribute 'default nil :font "Andale Mono-10") ; better than Ubuntu default
     ;(set-face-attribute 'default t :font "Dejavu Sans Mono-13")
-    (set-face-attribute 'default nil :font "Droid Sans Mono-10")
+    ;(set-face-attribute 'default nil :font "Droid Sans Mono-10")
 
-    )
 )
 #+END_SRC
 
@@ -305,7 +325,7 @@ ATM resizing of headings does not work.
 #+RESULTS:
 
 ** meacupla-theme
-#+BEGIN_SRC emacs-lisp :tangle no
+<#+BEGIN_SRC emacs-lisp :tangle no
 (use-package meacupla-theme
   :ensure t
   :init 
@@ -337,6 +357,12 @@ ATM resizing of headings does not work.
 
 (bind-key "M-<f12>" 'switch-theme)
 (bind-key "M-<f11>" 'disable-active-themes)
+#+END_SRC
+
+* highlight line
+#+BEGIN_SRC emacs-lisp
+; Highlights the current cursor line
+(global-hl-line-mode t)
 #+END_SRC
 
 * Font
@@ -535,11 +561,13 @@ source: [[http://sachachua.com/blog/2015/11/2015-11-18-emacs-hangout/][2015-11-1
 
 #+BEGIN_SRC emacs-lisp
 (when window-system
-  (menu-bar-mode -1)
+;  (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (tooltip-mode -1))
 #+END_SRC
+
+#+RESULTS:
 
 * input settings
 #+BEGIN_SRC emacs-lisp
@@ -644,6 +672,8 @@ other is highlighted. Activate it once by running"
   (keyfreq-autosave-mode 1)
 )
 #+END_SRC
+
+
 
 
 
