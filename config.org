@@ -345,7 +345,7 @@ ATM resizing of headings does not work.
 #+RESULTS:
 
 ** meacupla-theme
-<#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package meacupla-theme
   :ensure t
   :init 
