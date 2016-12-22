@@ -218,8 +218,11 @@ Show org-mode bullets as UTF-8 characters.
   :ensure t
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-(setq org-bullets-bullet-list '("⚫" ))
+(setq org-bullets-bullet-list '("○" ))
 #+END_SRC
+
+#+RESULTS:
+| ○ |
 
 "○" "☉" "◎" "◉" "○" "◌" "◎" "●" "◦" "◯" "⚪" "⚫" "⚬" "❍" "￮" "⊙" "⊚" "⊛" "∙" "∘"
 
