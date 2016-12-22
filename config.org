@@ -212,12 +212,25 @@ twice *org-display-inline-images* after making some changes to dot source block 
 
 ** org-bullets
 Show org-mode bullets as UTF-8 characters.
+[[https://zhangda.wordpress.com/2016/02/15/configurations-for-beautifying-emacs-org-mode/][Configurations for beautifying Emacs org mode | Da's recipes on Emacs, IT, and more]]
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
   :ensure t
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+(setq org-bullets-bullet-list '("⚫" ))
 #+END_SRC
+
+"○" "☉" "◎" "◉" "○" "◌" "◎" "●" "◦" "◯" "⚪" "⚫" "⚬" "❍" "￮" "⊙" "⊚" "⊛" "∙" "∘"
+
+** org-elipsis
+[[https://zhangda.wordpress.com/2016/02/15/configurations-for-beautifying-emacs-org-mode/][Configurations for beautifying Emacs org mode | Da's recipes on Emacs, IT, and more]]
+#+BEGIN_SRC emacs-lisp
+(setq org-ellipsis " ➤")
+#+END_SRC
+
+#+RESULTS:
+: ➤
 
 * Themes
 Great source of screenshots of popular themes is [[http://emacsthemes.com/][A GNU Emacs Themes Gallery]].
@@ -251,16 +264,18 @@ Lots of this section was grabbed from  [[https://github.com/danielmai/.emacs.d/b
 #+END_SRC
 
 ** Material theme
-[[https://github.com/cpaulik/emacs-material-theme][cpaulik/emacs-material-theme]]
-#+BEGIN_SRC emacs-lisp :tangle no
+[[https://github.com/cpaulik/emacs-material-theme][cpauli87k/emacs-material-theme]]
+#+BEGIN_SRC emacs-lisp 
 (use-package material-theme
   :ensure t
+  :init 
+   (load-theme 'material t)
 )
 #+END_SRC
 
 ** Alect themes
 [[https://github.com/alezost/alect-themes][alezost/alect-themes]]
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package alect-themes
   :ensure t
   :init

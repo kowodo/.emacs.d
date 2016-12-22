@@ -60,10 +60,17 @@ static char *gnus-pointer[] = {
 \"###..######.######\",
 \"###########.######\" };")))
  '(hl-sexp-background-color "#efebe9")
+ '(nrepl-message-colors
+   (quote
+    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/Emacs/principium_vitae.org" "~/Dropbox/Emacs/JakNaEmacs.org" "~/Dropbox/Emacs/pal.org" "~/Dropbox/Emacs/dma.org" "~/Dropbox/Emacs/opt.org" "~/Dropbox/Emacs/rzn.org" "~/Dropbox/Emacs/tal.org" "~/Dropbox/Emacs/bia.org" "~/Dropbox/Emacs/ko.org" "~/Dropbox/Emacs/pah.org")))
  '(org-log-into-drawer t)
  '(package-selected-packages
    (quote
     (color-theme org-bullets zenburn-theme alect-themes material-theme beacon which-key avy magit company-math company helm-swoop helm meacupla-theme use-package)))
+ '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 587)
