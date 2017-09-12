@@ -382,7 +382,7 @@ ATM resizing of headings does not work.
 * highlight line
 #+BEGIN_SRC emacs-lisp
 ; Highlights the current cursor line
-(global-hl-line-mode t)
+(global-hl-line-mode 0)
 #+END_SRC
 
 * Font
