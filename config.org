@@ -664,9 +664,12 @@ other is highlighted. Activate it once by running"
 * rainbow-delimiters
 https://github.com/Fanael/rainbow-delimiters
 #+BEGIN_SRC emacs-lisp
-(use-package rainbow-delimiters-mode
+(use-package rainbow-delimiters
   :ensure t)
 #+END_SRC
+
+#+RESULTS:
+
 * Prompt for ‘y or n’ instead of ‘yes or no’
 #+BEGIN_SRC emacs-lisp
 (defalias 'yes-or-no-p #'y-or-n-p)
