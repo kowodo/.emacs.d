@@ -700,6 +700,17 @@ https://github.com/Fanael/rainbow-delimiters
 )
 #+END_SRC
 
+* keychain-refresh-environment
+#+BEGIN_SRC emacs-lisp
+(use-package keychain-environment
+  :ensure t
+  :init 
+  (keychain-refresh-environment)
+)
+
+#+END_SRC
+
+#+RESULTS:
 
 
 
