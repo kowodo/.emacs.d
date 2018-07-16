@@ -34,6 +34,8 @@
 (require 'bind-key)
 ;(setq use-package-verbose t)
 
+;; this is because I cannot push in maggit on windows machine with ssh key with passphrase
+(setenv "SSH_ASKPASS" "git-gui--askpass")
 
 ;;; Load the config
 (org-babel-load-file (concat user-emacs-directory "config.org"))
